@@ -24,7 +24,7 @@
     			3. save the total remaining calrories
 */
 
-void saveData(const char* HEALTHFILEPATH, const HealthData* health_data) {
+void saveData(const char* HEALTHFILEPATH, HealthData* health_data) {
 	int i;
     FILE* file = fopen(HEALTHFILEPATH, "w");
     if (file == NULL) {
@@ -36,25 +36,25 @@ void saveData(const char* HEALTHFILEPATH, const HealthData* health_data) {
     fprintf(file, "[Exercises] \n");
     for(i=0;i<health_data->exercise_count;i++){
     	fprintf(file, "%s - %d kcal\n", health_data->exercises[i].exercise_name, health_data->exercises[i].calories_burned_per_minute);
-    	total_calories_burned += health_data->exercises[i].calories_burned_per_minute;  // add burned calories to total burned calories
+    	health_data->total_calories_burned += health_data->exercises[i].calories_burned_per_minute;  // add burned calories to total burned calories
 	}
-	fprintf(file, "Total calories burned : %d kcal\n", total_calories_burned);  // print total calories
+	fprintf(file, "Total calories burned : %d kcal\n", health_data->total_calories_burned);  // print total calories
     
     
     // ToCode: to save the chosen diet and total calories intake 
     fprintf(file, "\n[Diets] \n");
     for(i=0;i<health_data->diet_count;i++){
     	fprintf(file, "%s - %d kcal\n", health_data->diet[i].food_name, health_data->diet[i].calories_intake);
-    	total_calories_intake += health_data->diet[i].calories_intake; // add diet calories to total intake calories
+    	health_data->total_calories_intake += health_data->diet[i].calories_intake; // add diet calories to total intake calories
 	}
-	fprintf(file, "Total calories intake : %d\n", total_calories_intake);
+	fprintf(file, "Total calories intake : %d\n", health_data->total_calories_intake);
 
 
 
     // ToCode: to save the total remaining calrories
     fprintf(file, "\n[Total] \n");
     fprintf(file, "Basal metabolic rate - %d kcal\n", BASAL_METABOLIC_RATE);
-    fprintf(file, "The remaining calories - %d kcal\n", total_calories_intake-total_calories_burned);
+    fprintf(file, "The remaining calories - %d kcal\n", (health_data->total_calories_intake)-(health_data->total_calories_burned));
     
     fclose(file);
 }
@@ -74,8 +74,8 @@ void printHealthData(const HealthData* health_data) {
 	
 	// ToCode: to print out the saved history of exercises
 	printf("=========================== History of Exercise =======================\n");
-	for(i=0;i<exercise_count;i++){
-		printf("Exercise : %s, Calories burned : %d kcal",exercises[i].exercise_name, exercises[i].calories_burned_per_minute);
+	for(i=0;i<health_data->exercise_count;i++){
+		printf("Exercise : %s, Calories burned : %d kcal",health_data->exercises[i].exercise_name, health_data->exercises[i].calories_burned_per_minute);
 	}
   
   
@@ -83,8 +83,8 @@ void printHealthData(const HealthData* health_data) {
 
     // ToCode: to print out the saved history of diets
     printf("============================= History of Diet =========================\n");
-    for(i=0;i<diet_count;i++){
-    	printf("Food : %s, Calories intake : %d kcal", diet[i].food_name, diet[i].calories_intake);
+    for(i=0;i<health_data->diet_count;i++){
+    	printf("Food : %s, Calories intake : %d kcal", health_data->diet[i].food_name, health_data->diet[i].calories_intake);
 	}
 
 
@@ -95,9 +95,9 @@ void printHealthData(const HealthData* health_data) {
 	// total calories burned, total calories intake, and the remaining calories
 	printf("============================== Total Calories =========================\n");
 	printf("Basal Metabolic Rate : %d\n", BASAL_METABOLIC_RATE);
-	printf("Total calories burned : %d\n", total_calories_burned);
-	printf("Total calories intake : %d\n", total_calories_intake);
-	printf("The remaining calories : %d\n", total_calories_intake - total_calories_burned);
+	printf("Total calories burned : %d\n", health_data->total_calories_burned);
+	printf("Total calories intake : %d\n", health_data->total_calories_intake);
+	printf("The remaining calories : %d\n", (health_data->total_calories_intake) - (health_data->total_calories_burned));
  
  
     printf("=======================================================================\n \n");
