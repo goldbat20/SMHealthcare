@@ -34,13 +34,17 @@ void loadDiets(const char* DIETFILEPATH) {
     }
 
      // ToCode: to read a list of the diets from the given file
-    while () {
+    while (fgets(diet_list, sizeof(diet_list), file) != EOF) {
     	
         if (diet_list_size >= MAX_DIETS){
         	break;
 		}
+			
     }
     fclose(file);
+    
+    fprintf(file, "%s\n", diet_list[MAX_DIETS]);  // save diets to a file
+    diet_list_size++;  // increase in the number of diets
 }
 
 /*
@@ -57,9 +61,23 @@ void inputDiet(HealthData* health_data) {
     
     // ToCode: to provide the options for the diets to be selected
     printf("The list of diets:\n");
-    
+    FILE *file = fopen("diet.txt", "r");
+    if (file = NULL){
+    	printf("There is no file for diets!\n");
+    	return;
+	}
+	for(i=0;fgets(diet_list,sizeof(diet_list),file) != NULL;i++){
+		printf("%d. %s\n", i+1, diet_list);
+	}
     
 	// ToCode: to enter the diet to be chosen with exit option
+	printf("Choose the diet you want to eat : \n");
+	scanf("%d", &choice);
+	
+	if (choice>0 && choice<6)
+		printf("You selected %s with %d calories.\n",);
+	else
+		printf("Invalid choice!\n");
     
 
     // ToCode: to enter the selected diet in the health data
