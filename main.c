@@ -35,6 +35,7 @@ int main() {
             break; //end the loop
 		} 
 		else{
+			// display the main menu
 			printf("\n=======================================================================\n");
         	printf("[Healthcare Management Systems] \n");
         	printf("1. Exercise \n");
@@ -42,7 +43,7 @@ int main() {
         	printf("3. Show logged information \n");
         	printf("4. Exit \n");
         	printf("Select the desired number: ");
-        	scanf("%d", &choice);
+        	scanf("%d", &choice);  // get user's choice
         	printf("=======================================================================\n");
         }
         
@@ -61,17 +62,18 @@ int main() {
                 break;
                 
             case 4:
-            	
+            	// exit option
     			printf("Exit the system.\n");
     			printf("=======================================================================\n");
                 break;
                 
             default:
+            	// handle invalid input
                 printf("[Error] Invalid option. \n");
                 printf("Please try again! \n");
 		}
-    } while (choice != 4);
+    } while (choice != 4);  // continue the loop until the user selects "4. Exit"
 
-    return 0;
+    return 0;  // indicate successful program termination
 }
 

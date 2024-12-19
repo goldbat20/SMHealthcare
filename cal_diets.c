@@ -71,6 +71,7 @@ void inputDiet(HealthData* health_data) {
 	printf("Choose the diet you want to eat : \n");
 	scanf("%d", &choice);
 	
+	// validate the user's choice
 	if (choice<1 || choice>diet_list_size){
 		printf("Invalid choice.\n");
 		return;
