@@ -75,7 +75,7 @@ void printHealthData(const HealthData* health_data) {
 	// ToCode: to print out the saved history of exercises
 	printf("=========================== History of Exercise =======================\n");
 	for(i=0;i<health_data->exercise_count;i++){
-		printf("Exercise : %s, Calories burned : %d kcal",health_data->exercises[i].exercise_name, health_data->exercises[i].calories_burned_per_minute);
+		printf("Exercise : %s, Calories burned : %d kcal\n",health_data->exercises[i].exercise_name, health_data->exercises[i].calories_burned_per_minute);
 	}
   
   
@@ -84,7 +84,7 @@ void printHealthData(const HealthData* health_data) {
     // ToCode: to print out the saved history of diets
     printf("============================= History of Diet =========================\n");
     for(i=0;i<health_data->diet_count;i++){
-    	printf("Food : %s, Calories intake : %d kcal", health_data->diet[i].food_name, health_data->diet[i].calories_intake);
+    	printf("Food : %s, Calories intake : %d kcal\n", health_data->diet[i].food_name, health_data->diet[i].calories_intake);
 	}
 
 
@@ -103,7 +103,29 @@ void printHealthData(const HealthData* health_data) {
     printf("=======================================================================\n \n");
     
 	
-	// ToCode: to print out the recommendtaion depending on the current total calories burned and intake    
+	// ToCode: to print out the recommendtaion depending on the current total calories burned and intake 
+	int remain_calories = health_data->total_calories_intake - health_data->total_calories_burned;
+	if(remain_calories == 0){
+		printf("You have consumed all your calories for today!\n");
+		printf("Exit the system.\n");
+		exit(0);
+	}
+	else if(remain_calories < 0){
+		printf("[Warning] Too few calories!\n");
+		if(health_data->total_calories_intake == DAILY_CALORIE_GOAL)
+			printf("Your total calorie intake for today has reached your goal!\n");
+		else if(health_data->total_calories_intake < DAILY_CALORIE_GOAL)
+			printf("Your total calorie intake for today has not reached your goal, remember to eat more!!\n");
+		else
+			printf("You have eaten more calories than planned today, but you have exercised too much!\n");
+	}
+	else
+		printf("Please exercise for your health!\n");
+		if(health_data->total_calories_intake == DAILY_CALORIE_GOAL)
+			printf("Your total calorie intake for today has reached your goal!\n");
+		else if(health_data->total_calories_intake < DAILY_CALORIE_GOAL)
+			printf("Your total calorie intake for today has not reached your goal, remember to eat more!!\n");
+	   
     
     
 	 printf("=======================================================================\n");

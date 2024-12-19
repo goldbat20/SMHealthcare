@@ -32,15 +32,14 @@ void loadDiets(const char* DIETFILEPATH) {
         printf("There is no file for diets! \n");
         return;
     }
+    
+  	// ToCode : to read a list of the diets from the given file
+  	while(fscanf(file, "%s %d", diet_list[diet_list_size].food_name, &diet_list[diet_list_size].calories_intake) ==2){
+  		diet_list_size++;
+  		if(diet_list_size >= MAX_DIETS)
+  			break;  // stop if the max number of diets is exceed
+	  }
 
-     // ToCode: to read a list of the diets from the given file
-    while (fscanf(file, "%s %d", diet_list[diet_list_size].food_name, &diet_list[diet_list_size].calories_intake) == 2) {
-    	diet_list_size++;
-        if (diet_list_size >= MAX_DIETS){
-        	break;  // if the maximun number of diets is exceed, loop termination
-		}
-			
-    }
     fclose(file);
 }
 
@@ -64,13 +63,8 @@ void inputDiet(HealthData* health_data) {
     
     // ToCode: to provide the options for the diets to be selected
     printf("The list of diets:\n");
-    FILE *file = fopen("diet.txt", "r");
-    if (file == NULL){
-    	printf("There is no file for diets!\n");
-    	return;
-	}
-	for(i=0;i<health_data->diet_count;i++){
-		printf("%d. %s - %d kcal\n", i+1, health_data->diet[i].food_name, health_data->diet[i].calories_intake);
+	for(i=0;i<diet_list_size;i++){
+		printf("%d. %s - %d kcal\n", i+1, diet_list[i].food_name, diet_list[i].calories_intake);
 	}
     
 	// ToCode: to enter the diet to be chosen with exit option
@@ -87,6 +81,8 @@ void inputDiet(HealthData* health_data) {
     
     // ToCode: to enter the total calories intake in the health data
 	strcpy(health_data->diet[health_data->diet_count].food_name, diet_list[choice-1].food_name);  // copy the name of the selected diet from the diet_list to the user's exercise record
+	health_data->diet[health_data->diet_count].calories_intake = diet_list[choice-1].calories_intake;  // store the calories intake of the selected food
+	health_data->total_calories_intake += health_data->diet[health_data->diet_count].calories_intake;  //update the total calories intake
 	health_data->diet_count++;
 	printf("Total calories intake : %d kcal.\n", health_data->total_calories_intake);
 
