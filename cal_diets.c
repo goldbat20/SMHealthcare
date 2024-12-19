@@ -34,7 +34,7 @@ void loadDiets(const char* DIETFILEPATH) {
     }
 
      // ToCode: to read a list of the diets from the given file
-    while (fscanf(file, "%s %d", diet_list[diet_list_size].food_name, diet_list[diet_list_size].calories_intake) != EOF) {
+    while (fscanf(file, "%s %d", diet_list[diet_list_size].food_name, &diet_list[diet_list_size].calories_intake) == 2) {
     	diet_list_size++;
         if (diet_list_size >= MAX_DIETS){
         	break;  // if the maximun number of diets is exceed, loop termination
@@ -56,10 +56,16 @@ void loadDiets(const char* DIETFILEPATH) {
 void inputDiet(HealthData* health_data) {
     int choice, i;
     
+    //Check whether diet history is full
+    if(health_data->diet_count >= MAX_DIETS){
+    	printf("Diet history is full.\n");
+    	return;
+	}
+    
     // ToCode: to provide the options for the diets to be selected
     printf("The list of diets:\n");
     FILE *file = fopen("diet.txt", "r");
-    if (file = NULL){
+    if (file == NULL){
     	printf("There is no file for diets!\n");
     	return;
 	}
@@ -80,7 +86,8 @@ void inputDiet(HealthData* health_data) {
     printf("You selected %s.\n", health_data->diet[choice-1].food_name);
     
     // ToCode: to enter the total calories intake in the health data
-	health_data->total_calories_intake += health_data->diet[choice-1].calories_intake;
+	strcpy(health_data->diet[health_data->diet_count].food_name, diet_list[choice-1].food_name);  // copy the name of the selected diet from the diet_list to the user's exercise record
+	health_data->diet_count++;
 	printf("Total calories intake : %d kcal.\n", health_data->total_calories_intake);
 
 }

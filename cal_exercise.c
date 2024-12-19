@@ -34,7 +34,7 @@ void loadExercises(const char* EXERCISEFILEPATH) {
     }
 
     // ToCode: to read a list of the exercises from the given file
-    while (fscanf(file, "%s %d", exercise_list[exercise_list_size].exercise_name, exercise_list[exercise_list_size].calories_burned_per_minute) != EOF) {
+    while (fscanf(file, "%s %d", exercise_list[exercise_list_size].exercise_name, &exercise_list[exercise_list_size].calories_burned_per_minute) == 2) {
     	exercise_list_size++;
         if (exercise_list_size >= MAX_EXERCISES){
         	break; // if the maximum number of exercises is exceeded, loop termination
@@ -58,10 +58,16 @@ void loadExercises(const char* EXERCISEFILEPATH) {
 void inputExercise(HealthData* health_data) {
     int choice, duration, i;
     
+    //Check whether exercise history is full
+    if(health_data->exercise_count >= MAX_EXERCISES){
+    	printf("Exercise history is full.\n");
+    	return;
+	}
+    
     // ToCode: to provide the options for the exercises to be selected
     printf("The list of exercises: \n");
-    for(i=0;i<health_data->exercise_count;i++){
-    	printf("%d. %s - Calories burned per minute : %d kcal\n", i+1, health_data->exercises[i].exercise_name, health_data->exercises[i].calories_burned_per_minute);
+    for(i=0;i<exercise_list_size;i++){
+    	printf("%d. %s - Calories burned per minute : %d kcal\n", i+1, exercise_list[i].exercise_name, exercise_list[i].calories_burned_per_minute);
 	}
 	printf("Enter the number of the exercise you want : \n"); //
 	scanf("%d", &choice);
@@ -80,7 +86,9 @@ void inputExercise(HealthData* health_data) {
     scanf("%d", &duration);
 
     // ToCode: to enter the selected exercise and total calcories burned in the health data
-    health_data->total_calories_burned += health_data->exercises[choice-1].calories_burned_per_minute * duration;
+    strcpy(health_data->exercises[health_data->exercise_count].exercise_name, exercise_list[choice-1].exercise_name);  // Copy the name of the selected exercise from the exercise_list to the user's exercise record
+    health_data->exercises[health_data->exercise_count].calories_burned_per_minute = exercise_list[choice-1].calories_burned_per_minute*duration;  // Calculate the total calories burned for the selected exercise and store it in the user's exercise record
+    health_data->exercise_count++;
     printf("You selected %s.\n", health_data->exercises[choice-1].exercise_name);
     printf("Total calories burned : %d kcal.\n", health_data->total_calories_burned);
     
